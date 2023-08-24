@@ -1,0 +1,3 @@
+CREATE USER vnoc PASSWORD 'top-secret';
+CREATE DATABASE vnoc OWNER vnoc;
+GRANT CONNECT ON DATABASE vnoc TO vnoc;

@@ -1,0 +1,117 @@
+version: "1.0"
+
+services:
+  zookeeper:
+    image: arm64v8/zookeeper:3.5.9
+    ports:
+      - 2181:2181
+    environment:
+      - ZOO_PORT_NUMBER=2181
+      - ZOO_TICK_TIME=2000
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - devenv
+    
+  kafka:
+    image: ubuntu/kafka:3.1-22.04_edge
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    volumes:
+      - ./server.properties:/etc/kafka/server.properties
+    environment:
+      - 'KAFKA_HEAP_OPTS=-Xmx500m -Xms500m'
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,LOCALHOST://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9093,LOCALHOST://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,LOCALHOST:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - KAFKA_MESSAGE_MAX_BYTES=3145729
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=3145729
+    networks:
+      - devenv
+
+  kafka-setup:
+    image: ubuntu/kafka:3.1-22.04_edge
+    hostname: kafka-setup
+    container_name: kafka-setup
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER_ID=ignored
+      - KAFKA_ZOOKEEPER_CONNECT=ignored
+    volumes:
+      - ./topics:/tmp/topics.txt
+      - ./create-topics.sh:/tmp/create-topics.sh
+    entrypoint: [ '/bin/bash', '-c' ]
+    command: sh /tmp/create-topics.sh
+    networks:
+      - devenv
+  
+  zeebe:
+    image: camunda/zeebe:8.2.1
+    restart: always
+    environment:
+      - ZEEBE_LOG_LEVEL=debug
+    ports:
+      - "26500:26500"
+      - "9600:9600"
+    volumes:
+      - ./config/zeebe/application.yaml:/usr/local/zeebe/config/application.yaml
+      - ./exporter/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-kafka-exporter.jar
+    depends_on:
+      - kafka
+    networks:
+      - devenv
+
+  zeebe-simple-monitor:
+    image: ghcr.io/elisapolystar/zeebe-simple-monitor:latest
+    restart: always
+    environment:
+      - zeebe.client.broker.contactPoint=zeebe:26500
+      - zeebe.client.broker.gateway-address=zeebe:26500
+      - PROFILE=kafka
+      - spring.datasource.url=jdbc:postgresql://zeebe-test-bench-postgres-1:5432/postgres
+      - spring.datasource.username=vnoc
+      - spring.datasource.password=top-secret
+      - spring.datasource.driverClassName=org.postgresql.Driver
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9093
+    ports:
+      - "8083:8082"
+    depends_on:
+      - zeebe
+    networks:
+      - devenv
+  
+  postgres:
+    image: ghcr.io/cloudnative-pg/postgis:14-3.3
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=top-secret
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres:/var/lib/postgres/data
+    networks:
+      - devenv
+
+volumes:
+  exporters:
+  postgres:
+
+networks:
+  devenv:
+    driver: bridge
+    name: devenv
