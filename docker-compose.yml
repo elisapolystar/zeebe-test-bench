@@ -76,8 +76,8 @@ services:
       - zeebe.client.broker.gateway-address=zeebe:26500
       - PROFILE=kafka
       - spring.datasource.url=jdbc:postgresql://zeebe-test-bench-postgres-1:5432/postgres
-      - spring.datasource.username=vnoc
-      - spring.datasource.password=top-secret
+      - spring.datasource.username=test
+      - spring.datasource.password=password
       - spring.datasource.driverClassName=org.postgresql.Driver
       - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9093
