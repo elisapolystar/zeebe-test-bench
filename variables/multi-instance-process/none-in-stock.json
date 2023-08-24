@@ -1,0 +1,15 @@
+{     
+    "items": [
+        {
+            "value" : 10,
+            "inCart": 10,
+            "inStock": 5
+        },
+        {
+            "value" : 20,
+            "inCart": 2,
+            "inStock": 1
+        }
+    ],
+    "orderId": "3"
+}
