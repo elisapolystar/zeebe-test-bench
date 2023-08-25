@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hmvvj0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.13.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hmvvj0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.13.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
   <bpmn:process id="money-loan" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="Needed to loan money">
       <bpmn:outgoing>Flow_03ei1b4</bpmn:outgoing>
@@ -10,26 +10,35 @@
       <bpmn:outgoing>Flow_1sw3gpt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_03ei1b4" sourceRef="StartEvent_1" targetRef="Gateway_0wveo0b" />
-    <bpmn:sequenceFlow id="Flow_0kwk6ch" sourceRef="Gateway_0wveo0b" targetRef="send-acceptance" />
-    <bpmn:sequenceFlow id="Flow_1btw3rn" sourceRef="send-acceptance" targetRef="transfer-money" />
+    <bpmn:sequenceFlow id="Flow_0kwk6ch" sourceRef="Gateway_0wveo0b" targetRef="send-acceptance-letter" />
+    <bpmn:sequenceFlow id="Flow_1btw3rn" sourceRef="send-acceptance-letter" targetRef="transfer-money" />
     <bpmn:endEvent id="Event_19fj3y9" name="End">
       <bpmn:incoming>Flow_1e0z4vc</bpmn:incoming>
       <bpmn:incoming>Flow_0om718m</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1e0z4vc" sourceRef="transfer-money" targetRef="Event_19fj3y9" />
-    <bpmn:sequenceFlow id="Flow_1sw3gpt" sourceRef="Gateway_0wveo0b" targetRef="send-rejection">
+    <bpmn:sequenceFlow id="Flow_1sw3gpt" sourceRef="Gateway_0wveo0b" targetRef="send-rejection-letter">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=debt &gt; 1000</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0om718m" sourceRef="send-rejection" targetRef="Event_19fj3y9" />
-    <bpmn:serviceTask id="send-acceptance" name="Send acceptance letter">
+    <bpmn:sequenceFlow id="Flow_0om718m" sourceRef="send-rejection-letter" targetRef="Event_19fj3y9" />
+    <bpmn:serviceTask id="send-acceptance-letter" name="Send acceptance letter">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-acceptance-letter" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kwk6ch</bpmn:incoming>
       <bpmn:outgoing>Flow_1btw3rn</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="transfer-money" name="Transfer money">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="transfer-money" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1btw3rn</bpmn:incoming>
       <bpmn:outgoing>Flow_1e0z4vc</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="send-rejection" name="Send rejection letter">
+    <bpmn:serviceTask id="send-rejection-letter" name="Send rejection letter">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-rejection-letter" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1sw3gpt</bpmn:incoming>
       <bpmn:outgoing>Flow_0om718m</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -54,13 +63,13 @@
           <dc:Bounds x="970" y="225" width="20" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_10uea57_di" bpmnElement="send-acceptance">
+      <bpmndi:BPMNShape id="Activity_10uea57_di" bpmnElement="send-acceptance-letter">
         <dc:Bounds x="450" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bximgm_di" bpmnElement="transfer-money">
         <dc:Bounds x="660" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0al3gw0_di" bpmnElement="send-rejection">
+      <bpmndi:BPMNShape id="Activity_0al3gw0_di" bpmnElement="send-rejection-letter">
         <dc:Bounds x="580" y="260" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_03ei1b4_di" bpmnElement="Flow_03ei1b4">
