@@ -12,7 +12,7 @@
     <bpmn:startEvent id="Event_0ni2wie" name="Order received">
       <bpmn:outgoing>Flow_17bi60q</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_059pcaa" name="Ship Parcel">
+    <bpmn:serviceTask id="ship-parcel" name="Ship Parcel">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="ship-parcel" />
       </bpmn:extensionElements>
@@ -22,7 +22,7 @@
     <bpmn:endEvent id="Event_06awsrd" name="Order sent">
       <bpmn:incoming>Flow_0ph4kkj</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0ph4kkj" sourceRef="Activity_059pcaa" targetRef="Event_06awsrd" />
+    <bpmn:sequenceFlow id="Flow_0ph4kkj" sourceRef="ship-parcel" targetRef="Event_06awsrd" />
     <bpmn:callActivity id="Activity_0w6u2p9" name="Processing order">
       <bpmn:extensionElements>
         <zeebe:calledElement processId="process-order" propagateAllChildVariables="false" />
@@ -34,11 +34,11 @@
     <bpmn:boundaryEvent id="Event_1jonqke" name="Order canceled" attachedToRef="Activity_0w6u2p9">
       <bpmn:outgoing>Flow_0ttgoj1</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0uln098">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P14D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT15S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0ttgoj1" name="" sourceRef="Event_1jonqke" targetRef="Event_0rzkhph" />
-    <bpmn:sequenceFlow id="Flow_1awp1nb" sourceRef="Activity_0w6u2p9" targetRef="Activity_059pcaa" />
+    <bpmn:sequenceFlow id="Flow_1awp1nb" sourceRef="Activity_0w6u2p9" targetRef="ship-parcel" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-subprocess">
@@ -54,7 +54,7 @@
           <dc:Bounds x="154" y="145" width="73" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_09win2v" bpmnElement="Activity_059pcaa">
+      <bpmndi:BPMNShape id="BPMNShape_09win2v" bpmnElement="ship-parcel">
         <dc:Bounds x="780" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

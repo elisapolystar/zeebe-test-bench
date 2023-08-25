@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0w9oklm" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.13.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
   <bpmn:process id="process-order" name="Processing order" isExecutable="true">
-    <bpmn:serviceTask id="Activity_087lvr0" name="Fetch items">
+    <bpmn:serviceTask id="fetch-items" name="Fetch items">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="fetch-items" />
       </bpmn:extensionElements>
@@ -11,7 +11,7 @@
     <bpmn:endEvent id="Event_17sjd19">
       <bpmn:incoming>Flow_1l4wg22</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_0yv7muk" name="Collect money">
+    <bpmn:serviceTask id="collect-money" name="Collect money">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="collect-money" />
       </bpmn:extensionElements>
@@ -21,20 +21,20 @@
     <bpmn:startEvent id="Event_0sdbmzl">
       <bpmn:outgoing>Flow_04jv6p3</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0va0tav" sourceRef="Activity_0yv7muk" targetRef="Activity_087lvr0" />
-    <bpmn:sequenceFlow id="Flow_1l4wg22" sourceRef="Activity_087lvr0" targetRef="Event_17sjd19" />
-    <bpmn:sequenceFlow id="Flow_04jv6p3" sourceRef="Event_0sdbmzl" targetRef="Activity_0yv7muk" />
+    <bpmn:sequenceFlow id="Flow_0va0tav" sourceRef="collect-money" targetRef="fetch-items" />
+    <bpmn:sequenceFlow id="Flow_1l4wg22" sourceRef="fetch-items" targetRef="Event_17sjd19" />
+    <bpmn:sequenceFlow id="Flow_04jv6p3" sourceRef="Event_0sdbmzl" targetRef="collect-money" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process-order">
-      <bpmndi:BPMNShape id="BPMNShape_1a10s2o" bpmnElement="Activity_087lvr0">
+      <bpmndi:BPMNShape id="BPMNShape_1a10s2o" bpmnElement="fetch-items">
         <dc:Bounds x="430" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1g2nekj" bpmnElement="Event_17sjd19">
         <dc:Bounds x="592" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0vsjwfc" bpmnElement="Activity_0yv7muk">
+      <bpmndi:BPMNShape id="BPMNShape_0vsjwfc" bpmnElement="collect-money">
         <dc:Bounds x="230" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
