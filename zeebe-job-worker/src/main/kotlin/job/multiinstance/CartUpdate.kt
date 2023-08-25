@@ -50,7 +50,6 @@ object CartUpdate {
                     println("Updating cart job worker is opened. Please create a process instance.")
                     waitUntilSystemInput("exit")
                 }
-            client.
         }
     }
 

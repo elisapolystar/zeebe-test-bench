@@ -13,13 +13,13 @@ The following application should be installed:
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 - [Docker Desktop](https://docs.docker.com/engine/install/#desktop)
 - [Java JDK v17](https://www.oracle.com/java/technologies/downloads/#java17)
-- [Gradle v7.6.1](https://gradle.org/next-steps/?version=7.6.1&format=all) (Clicking the link will automatically download the zip file. Please unzip and follow the instructions.)
+- [Kotlin](https://kotlinlang.org/docs/command-line.html#install-the-compiler)
 - [Camunda Modeler](https://camunda.com/download/modeler/)
+- [IntelliJ IDEA](https://www.jetbrains.com/help/idea/installation-guide.html)
 
 #### Recommended
 - `zbctl`
 - `jq`
-- [IntelliJ IDEA](https://www.jetbrains.com/help/idea/installation-guide.html)
 
 ## Setup
 - Start Docker Desktop
@@ -43,8 +43,8 @@ The following application should be installed:
 
 ## Running job workers without zbctl
 `zeebe-job-worker` is a Gradle project which includes pre-defined job workers. To run:
-- Option 1: In terminal, change the directory to `zeebe-job-worker` and run `gradle bootRun`
-- Option 2: Open `zeebe-job-worker` in IntelliJ IDEA and choose the Run button.
+- Open `zeebe-job-worker` in IntelliJ IDEA.
+- Open a job worker file (e.g., `CartUpdate.kt`) and click the `Run` button. Note that the run configuration (next to the run button) should be `Current File`.
 
 Each job worker can print one or more output lines to the command line upon whenever it's job worker is needed.
 
@@ -52,7 +52,7 @@ Each job worker can print one or more output lines to the command line upon when
 1. Start the environment: `./start.sh`. Open Zeebe Simple Monitor at `localhost:8083` and monitor the status after each step below.
 2. Deploy a process: `zbctl --insecure deploy ./bpmn/multi-instance-process.bpmn`
 3. Create an instance: ```zbctl --insecure create instance multi-instance-process --variables "`jq '.' variables/multi-instance-process/some-in-stock.json`"```. (If jq is not installed, replace the command between " " by the content in `some-in-stock.json`).
-4. Run the predefined job-worker: `cd zeebe-job-worker && gradle bootRun`.
-5. Run a job-worker in command line: `zbctl --insecure create worker initiate-payment --handler cat`
+4. Run the predefined job-worker: Open `CartUpdate.kt` of `zeebe-job-worker` in IntelliJ and run the file. The logs should start showing.
+5. Run a job-worker in command line: `zbctl --insecure create worker initiate-payment --handler cat`.
 6. Publish a message: `zbctl --insecure publish message "payment-received" --correlationKey="2"`. (Why 2? Check `some-in-stock.json`)`.
 
