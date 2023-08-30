@@ -1,7 +1,13 @@
 arch=$(uname -m)
 
-compose=docker-compose.yml
-kafkatopics=/opt/kafka/bin/kafka-topics.sh
+if [[ $arch == arm64 ]]
+then
+    compose=docker-compose-arm.yml
+    kafkatopics=/opt/kafka/bin/kafka-topics.sh
+else
+    compose=docker-compose.yml
+    kafkatopics=/opt/bitnami/kafka/bin/kafka-topics.sh
+fi
 
 kafkacontainer=zeebe-test-bench-kafka-1
 

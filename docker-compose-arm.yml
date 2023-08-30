@@ -2,7 +2,7 @@ version: "1.0"
 
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.8.0
+    image: arm64v8/zookeeper:3.5.9
     ports:
       - 2181:2181
     environment:
@@ -13,45 +13,49 @@ services:
       - devenv
     
   kafka:
-    image: bitnami/kafka:3.1.0
+    image: ubuntu/kafka:3.1-22.04_edge
     ports:
       - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    volumes:
+      - ./server.properties:/etc/kafka/server.properties
     environment:
-      - KAFKA_BROKER_ID=0
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - "KAFKA_HEAP_OPTS=-Xmx500m -Xms500m"
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:32181
-      - KAFKA_CFG_LISTENERS=EXTERNAL://:9092,CLIENT://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,CLIENT://kafka:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
-      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
-      - KAFKA_CFG_MESSAGE_MAX_BYTES=3145729
-      - KAFKA_CFG_REPLICA_FETCH_MAX_BYTES=3145729
+      - 'KAFKA_HEAP_OPTS=-Xmx500m -Xms500m'
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,LOCALHOST://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9093,LOCALHOST://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,LOCALHOST:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - KAFKA_MESSAGE_MAX_BYTES=3145729
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=3145729
     networks:
       - devenv
 
   kafka-setup:
-    image: bitnami/kafka:2.8.1
+    image: ubuntu/kafka:3.1-22.04_edge
     hostname: kafka-setup
     container_name: kafka-setup
     depends_on:
       - kafka
-      - schema-registry
-    volumes:
-      - ./topics:/topics.txt
-      - ./create-topics.sh:/scripts/create-topics.sh
-    command: bash /scripts/create-topics.sh
     environment:
-      KAFKA_CFG_BROKER_ID: ignored
-      KAFKA_CFG_ZOOKEEPER_CONNECT: ignored
+      - KAFKA_BROKER_ID=ignored
+      - KAFKA_ZOOKEEPER_CONNECT=ignored
+    volumes:
+      - ./topics:/tmp/topics.txt
+      - ./create-topics.sh:/tmp/create-topics.sh
+    entrypoint: [ '/bin/bash', '-c' ]
+    command: sh /tmp/create-topics.sh
     networks:
       - devenv
   
   get-kafka-exporter:
     image: busybox:1.35.0
     volumes:
+      - ./setup-zeebe.sh:/setup-zeebe.sh
       - exporters:/exporters
     command: wget --no-check-certificate https://repo1.maven.org/maven2/io/zeebe/zeebe-kafka-exporter/3.1.1/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar -O /exporters/zeebe-kafka-exporter.jar
 
@@ -68,7 +72,6 @@ services:
       - ./exporter/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-kafka-exporter.jar
     depends_on:
       - kafka
-      - get-kafka-exporter
     networks:
       - devenv
 
