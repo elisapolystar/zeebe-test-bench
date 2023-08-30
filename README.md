@@ -13,6 +13,7 @@ The following application should be installed:
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 - [Docker Desktop](https://docs.docker.com/engine/install/#desktop)
 - [Java JDK v17](https://www.oracle.com/java/technologies/downloads/#java17)
+- [Gradle v7.6.1](https://gradle.org/next-steps/?version=7.6.1&format=all) (Clicking the link will automatically download the zip file. Please unzip and follow the instructions.)
 - [Kotlin](https://kotlinlang.org/docs/command-line.html#install-the-compiler)
 - [Camunda Modeler](https://camunda.com/download/modeler/)
 - [IntelliJ IDEA](https://www.jetbrains.com/help/idea/installation-guide.html)
