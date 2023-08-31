@@ -52,12 +52,12 @@ services:
     networks:
       - devenv
   
-  get-kafka-exporter:
-    image: busybox:1.35.0
-    volumes:
-      - ./setup-zeebe.sh:/setup-zeebe.sh
-      - exporters:/exporters
-    command: wget --no-check-certificate https://repo1.maven.org/maven2/io/zeebe/zeebe-kafka-exporter/3.1.1/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar -O /exporters/zeebe-kafka-exporter.jar
+  # get-kafka-exporter:
+  #   image: busybox:1.35.0
+  #   volumes:
+  #     - ./setup-zeebe.sh:/setup-zeebe.sh
+  #     - exporters:/exporters
+  #   command: wget --no-check-certificate https://repo1.maven.org/maven2/io/zeebe/zeebe-kafka-exporter/3.1.1/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar -O /exporters/zeebe-kafka-exporter.jar
 
   zeebe:
     image: camunda/zeebe:8.2.1
@@ -68,8 +68,8 @@ services:
       - "26500:26500"
       - "9600:9600"
     volumes:
-      - ./config/zeebe/application.yaml:/usr/local/zeebe/config/application.yaml
-      - ./exporter/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-kafka-exporter.jar
+      - ./config/zeebe/application-arm.yaml:/usr/local/zeebe/config/application.yaml
+      - ./exporters/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-kafka-exporter.jar  
     depends_on:
       - kafka
     networks:
@@ -101,7 +101,7 @@ services:
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=top-secret
+      - POSTGRES_PASSWORD=password
     logging:
       options:
         max-size: 10m

@@ -20,7 +20,7 @@ services:
       - KAFKA_BROKER_ID=0
       - ALLOW_PLAINTEXT_LISTENER=yes
       - "KAFKA_HEAP_OPTS=-Xmx500m -Xms500m"
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:32181
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CFG_LISTENERS=EXTERNAL://:9092,CLIENT://:9093
       - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,CLIENT://kafka:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
@@ -29,6 +29,8 @@ services:
       - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
       - KAFKA_CFG_MESSAGE_MAX_BYTES=3145729
       - KAFKA_CFG_REPLICA_FETCH_MAX_BYTES=3145729
+    depends_on:
+      - zookeeper
     networks:
       - devenv
 
@@ -38,7 +40,6 @@ services:
     container_name: kafka-setup
     depends_on:
       - kafka
-      - schema-registry
     volumes:
       - ./topics:/topics.txt
       - ./create-topics.sh:/scripts/create-topics.sh
@@ -65,7 +66,7 @@ services:
       - "9600:9600"
     volumes:
       - ./config/zeebe/application.yaml:/usr/local/zeebe/config/application.yaml
-      - ./exporter/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-kafka-exporter.jar
+      - exporters:/usr/local/zeebe/exporters
     depends_on:
       - kafka
       - get-kafka-exporter
@@ -98,7 +99,7 @@ services:
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=top-secret
+      - POSTGRES_PASSWORD=password
     logging:
       options:
         max-size: 10m
