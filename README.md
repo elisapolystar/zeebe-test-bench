@@ -51,6 +51,7 @@ The following application should be installed:
 ## Running job workers without zbctl
 `zeebe-job-worker` is a Gradle project which includes pre-defined job workers. To run:
 - Open `zeebe-job-worker` in IntelliJ IDEA.
+- Run `gradle build`.
 - Open a job worker file (e.g., `CartUpdate.kt`) and click the `Run` button. Note that the run configuration (next to the run button) should be `Current File`.
 
 Each job worker can print one or more output lines to the command line upon whenever it's job worker is needed.
