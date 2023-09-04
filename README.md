@@ -10,24 +10,27 @@ This repository provides a test bench for building a monitoring workflow applica
 ## Installation
 The following application should be installed: 
 #### Required
+- [WSL2 (for Windows)](https://learn.microsoft.com/en-us/windows/wsl/install). Use WSL instead of Command Prompt / PowerShell from now on.
+- Ubuntu (for Windows). Download this in the Microsoft Store after installing WSL2. Restarting your machine after installation.
+- [SDKMAN](https://sdkman.io/install)
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 - [Docker Desktop](https://docs.docker.com/engine/install/#desktop)
-- [Java JDK v17](https://www.oracle.com/java/technologies/downloads/#java17)
-- [Gradle v7.6.1](https://gradle.org/next-steps/?version=7.6.1&format=all) (Clicking the link will automatically download the zip file. Please unzip and follow the instructions.)
-- [Kotlin](https://kotlinlang.org/docs/command-line.html#install-the-compiler)
+- Java JDK v17: `sdk install java 17`
+- Gradle v7.6.1: `sdk install gradle 7.6.1`
+- Kotlin: `sdk install kotlin`
 - [Camunda Modeler](https://camunda.com/download/modeler/)
-- [IntelliJ IDEA](https://www.jetbrains.com/help/idea/installation-guide.html)
+- [IntelliJ IDEA Community Edition](https://www.jetbrains.com/help/idea/installation-guide.html)
 
 #### Recommended
 - `zbctl`
-- `jq`
+- `jq`: `sudo apt-get install jq`
 
 ## Setup
 - Start Docker Desktop
 - Start the development environment: `./start.sh`
     - Check the logs of the container in Docker Desktop. If the error `java.lang.ClassNotFoundException: io.zeebe.exporters.kafka.KafkaExporter` exists (and potentially you are using an ARM Mac), do the following steps:
-        - Create an `exporter` folder at the root of this repository.
-        - Download `zeebe-kafka-exporter.jar` file through this [link](https://repo1.maven.org/maven2/io/zeebe/zeebe-kafka-exporter/3.1.1/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar -O /exporters/zeebe-kafka-exporter.jar) and move this jar inside the `exporter` folder created above
+        - Create an `exporters` folder at the root of this repository.
+        - Download `zeebe-kafka-exporter.jar` file through this [link](https://repo1.maven.org/maven2/io/zeebe/zeebe-kafka-exporter/3.1.1/zeebe-kafka-exporter-3.1.1-jar-with-dependencies.jar -O /exporters/zeebe-kafka-exporter.jar) and move this jar inside the `exporters` folder created above
         - Open `docker-compose-arm.yml` (or `docker-compose.yml` if  you are using Intel Mac) and comment out the `get-kafka-exporter` service.
         - Run `./start.sh` again.
 - Open Zeebe Simple Monitor at `localhost:8083`. No process should be visible yet, but the UI should be.
@@ -52,6 +55,7 @@ The following application should be installed:
 `zeebe-job-worker` is a Gradle project which includes pre-defined job workers. To run:
 - Open `zeebe-job-worker` in IntelliJ IDEA.
 - Run `gradle build`.
+    - For Windows, if you want to use IntelliJ IDEA's Terminal, remember to switch to the Ubuntu Terminal before running the command.
 - Open a job worker file (e.g., `CartUpdate.kt`) and click the `Run` button. Note that the run configuration (next to the run button) should be `Current File`.
 
 Each job worker can print one or more output lines to the command line upon whenever it's job worker is needed.
