@@ -26,7 +26,8 @@ hs_err_pid*
 .DS_Store
 .dockerignore
 .gradle/
-.idea/
+/.idea/*
+!/.idea/runConfigurations
 build/
 gradle/
 gradlew

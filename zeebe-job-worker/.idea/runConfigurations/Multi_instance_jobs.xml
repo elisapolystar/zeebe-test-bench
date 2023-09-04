@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Multi instance jobs" type="CompoundRunConfigurationType">
+    <toRun name="CartUpdate" type="JetRunConfigurationType" />
+    <toRun name="InitiatePayment" type="JetRunConfigurationType" />
+    <toRun name="ShipWithInsurance" type="JetRunConfigurationType" />
+    <toRun name="ShipWithoutInsurance" type="JetRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
