@@ -56,7 +56,7 @@ The following application should be installed:
 - Open `zeebe-job-worker` in IntelliJ IDEA.
 - Run `gradle build`.
     - For Windows, if you want to use IntelliJ IDEA's Terminal, remember to switch to the Ubuntu Terminal before running the command.
-- Open a job worker file (e.g., `CartUpdate.kt`) and click the `Run` button. Note that the run configuration (next to the run button) should be `Current File`.
+- There is some pre-defined run configurations for job workers available. Select a suitable one (e.g., CartUpdate) and click the Run button to run a job worker.
 
 Each job worker can print one or more output lines to the command line upon whenever it's job worker is needed.
 
