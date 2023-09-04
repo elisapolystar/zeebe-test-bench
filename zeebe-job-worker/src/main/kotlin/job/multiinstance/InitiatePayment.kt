@@ -14,18 +14,6 @@ import io.camunda.zeebe.client.api.worker.JobHandler
 import java.time.Duration
 import java.util.Scanner
 
-/**
- * When connecting to a cluster in Camunda Cloud, this application assumes that the following
- * environment variables are set:
- *
- *  * ZEEBE_ADDRESS
- *  * ZEEBE_CLIENT_ID
- *  * ZEEBE_CLIENT_SECRET
- *  * ZEEBE_AUTHORIZATION_SERVER_URL
- *
- * When `ZEEBE_ADDRESS` is not set, it connects to a broker running on localhost with
- * default ports
- */
 object InitiatePayment {
     @JvmStatic
     fun main(args: Array<String>) {
