@@ -30,9 +30,18 @@ open class Jobs {
         println("Money has been transferred successfully.")
     }
 
+    @JobWorker(type = "parse-order-items")
+    fun parseOrderItems(client: JobClient, job: ActivatedJob) {
+        client.newCompleteCommand(job.key).send().join()
+        val item = job.variablesAsMap["item"] as HashMap<*, *>
+        println("Cart includes ${item["inCart"]} of item ID ${item["id"]}")
+        delay()
+    }
+
     @JobWorker(type = "cart-update")
     fun cartUpdate(client: JobClient, job: ActivatedJob) {
         data class Item(
+            @SerializedName("id") val id: Int,
             @SerializedName("value") val value: Int,
             @SerializedName("inCart") val inCart: Int,
             @SerializedName("inStock") val inStock: Int,
@@ -40,7 +49,6 @@ open class Jobs {
         var remainInCart = emptyArray<Item>()
         var orderValue = 0
         val items = job.variablesAsMap["items"] as ArrayList<*>
-        println("There are ${items.size} items in cart: $items")
         for (item in items) {
             val itemObject = Gson().fromJson(item.toString(), Item::class.java)
             if (itemObject.inCart <= itemObject.inStock) {

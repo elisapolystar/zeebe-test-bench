@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vyqcr3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.13.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
-  <bpmn:process id="multi-instance-process" isExecutable="true">
+  <bpmn:process id="multi-instance-process" name="Multi Instance Process" isExecutable="true">
     <bpmn:extensionElements />
     <bpmn:startEvent id="order-placed" name="Order placed">
       <bpmn:outgoing>Flow_02fbvun</bpmn:outgoing>
@@ -45,15 +45,6 @@
       <bpmn:incoming>Flow_0kjm2o6</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0kjm2o6" sourceRef="Gateway_09paus8" targetRef="Event_01079cq" />
-    <bpmn:task id="parse-order-items" name="Parse order items">
-      <bpmn:incoming>Flow_02fbvun</bpmn:incoming>
-      <bpmn:outgoing>Flow_0kk1pnx</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics>
-        <bpmn:extensionElements>
-          <zeebe:loopCharacteristics inputCollection="=items" inputElement="item" />
-        </bpmn:extensionElements>
-      </bpmn:multiInstanceLoopCharacteristics>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_02fbvun" sourceRef="order-placed" targetRef="parse-order-items" />
     <bpmn:exclusiveGateway id="check-availability" name="Check availability" default="Flow_08mivr7">
       <bpmn:incoming>Flow_0kk1pnx</bpmn:incoming>
@@ -68,13 +59,6 @@
       <bpmn:incoming>Flow_08mivr7</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_08mivr7" sourceRef="check-availability" targetRef="out-of-stock" />
-    <bpmn:serviceTask id="cart-update" name="Cart Update">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="update-cart" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_16drf44</bpmn:incoming>
-      <bpmn:outgoing>Flow_03zflnp</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="initiate-payment" name="Initiate Payment">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="initiate-payment" />
@@ -82,8 +66,27 @@
       <bpmn:incoming>Flow_03zflnp</bpmn:incoming>
       <bpmn:outgoing>Flow_02m51mh</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_03zflnp" sourceRef="cart-update" targetRef="initiate-payment" />
     <bpmn:sequenceFlow id="Flow_02m51mh" sourceRef="initiate-payment" targetRef="payment-received" />
+    <bpmn:serviceTask id="cart-update" name="Cart Update">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="cart-update" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16drf44</bpmn:incoming>
+      <bpmn:outgoing>Flow_03zflnp</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_03zflnp" sourceRef="cart-update" targetRef="initiate-payment" />
+    <bpmn:serviceTask id="parse-order-items" name="Parse order items">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="parse-order-items" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_02fbvun</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kk1pnx</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics>
+        <bpmn:extensionElements>
+          <zeebe:loopCharacteristics inputCollection="=items" inputElement="item" />
+        </bpmn:extensionElements>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_3mcrbl7" name="payment-received">
     <bpmn:extensionElements>
@@ -96,6 +99,12 @@
         <dc:Bounds x="172" y="122" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="158" y="165" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jbrj63_di" bpmnElement="payment-received">
+        <dc:Bounds x="822" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="796" y="165" width="89" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1hddsos_di" bpmnElement="check-value" isMarkerVisible="true">
@@ -121,10 +130,6 @@
           <dc:Bounds x="1337" y="165" width="66" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1sbe3en_di" bpmnElement="parse-order-items">
-        <dc:Bounds x="290" y="100" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0yt4fc3_di" bpmnElement="check-availability" isMarkerVisible="true">
         <dc:Bounds x="435" y="115" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -141,14 +146,11 @@
         <dc:Bounds x="510" y="100" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1jbrj63_di" bpmnElement="payment-received">
-        <dc:Bounds x="822" y="122" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="796" y="165" width="89" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1g56wes_di" bpmnElement="initiate-payment">
         <dc:Bounds x="660" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_075y385_di" bpmnElement="parse-order-items">
+        <dc:Bounds x="290" y="100" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_05c4box_di" bpmnElement="Flow_05c4box">
         <di:waypoint x="858" y="140" />
