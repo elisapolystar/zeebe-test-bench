@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Sub process jobs" type="CompoundRunConfigurationType">
-    <toRun name="CollectMoney" type="JetRunConfigurationType" />
-    <toRun name="FetchItems" type="JetRunConfigurationType" />
-    <toRun name="ShipParcel" type="JetRunConfigurationType" />
-    <method v="2" />
-  </configuration>
-</component>

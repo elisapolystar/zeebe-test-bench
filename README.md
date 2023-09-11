@@ -2,7 +2,7 @@
 
 ## Description
 This repository provides a test bench for building a monitoring workflow application. It includes:
-- An development environment deployed to Docker with different services (Zeebe, Kafka, Postgres...)
+- A development environment deployed to Docker with different services (Zeebe, Kafka, Postgres...)
 - Process files (in `.bpmn` format, located under `./bpmn`) to be deployed to Zeebe.
 - Scripts to deploy these processes to Zeebe using `zbctl`.
 - Job workers that can be called from the BPMN files.
@@ -16,14 +16,14 @@ The following application should be installed:
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 - [Docker Desktop](https://docs.docker.com/engine/install/#desktop)
 - Java JDK v17: `sdk install java 17`
-- Gradle v7.6.1: `sdk install gradle 7.6.1`
+- Gradle v8.1.1: `sdk install gradle 8.1.1`
 - Kotlin: `sdk install kotlin`
 - [Camunda Modeler](https://camunda.com/download/modeler/)
-- [IntelliJ IDEA Community Edition](https://www.jetbrains.com/help/idea/installation-guide.html)
 
 #### Recommended
 - `zbctl`
 - `jq`: `sudo apt-get install jq`
+- [IntelliJ IDEA Community Edition](https://www.jetbrains.com/help/idea/installation-guide.html)
 
 ## Setup
 - Start Docker Desktop
@@ -34,7 +34,7 @@ The following application should be installed:
         - Open `docker-compose-arm.yml` (or `docker-compose.yml` if  you are using Intel Mac) and comment out the `get-kafka-exporter` service.
         - Run `./start.sh` again.
 - Open Zeebe Simple Monitor at `localhost:8083`. No process should be visible yet, but the UI should be.
-    - If not, restart `zeebe-simple-monitor` container in Docker Desktop until its log displays something like "Started ZeebeSimpleMonitorApp in 28.411 seconds". (Yes it's laggy and you will build an alternative for it in your project 😄)
+    - If not, restart `zeebe-simple-monitor` container in Docker Desktop until its log displays something like "Started ZeebeSimpleMonitorApp in x seconds".
 
 ## Interaction with Zeebe broker using zbctl
 - `zbctl` is used to interact with Zeebe. If you cannot install them locally, `zbctl` binary in `bin` directory can be used as an alternative. Each binary should be used in its corresponding operating system.
@@ -52,19 +52,14 @@ The following application should be installed:
 - Publish a message: `zbctl --insecure publish message <task-definition-type> --correlationKey=<key>`. The correlation key is set in Modeler as a variable (e.g., "orderId"), and "orderId" must be included when creating the process instance.
 
 ## Running job workers without zbctl
-`zeebe-job-worker` is a Gradle project which includes pre-defined job workers. To run:
-- Open `zeebe-job-worker` in IntelliJ IDEA.
-- Run `gradle build`.
-    - For Windows, if you want to use IntelliJ IDEA's Terminal, remember to switch to the Ubuntu Terminal before running the command.
-- There is some pre-defined run configurations for job workers available. Select a suitable one (e.g., CartUpdate) and click the Run button to run a job worker.
+`zeebe-job-worker` is a Gradle project which includes pre-defined job workers and process definitions. To start:
+- Build the project: `gradle build`.
+- Deploy all processes and start all job workers: `gradle bootrun`
 
 Each job worker can print one or more output lines to the command line upon whenever it's job worker is needed.
 
 ## Full example on setting up the environment and monitor a process instance
 1. Start the environment: `./start.sh`. Open Zeebe Simple Monitor at `localhost:8083` and monitor the status after each step below.
-2. Deploy a process: `zbctl --insecure deploy ./bpmn/multi-instance-process.bpmn`
-3. Create an instance: ```zbctl --insecure create instance multi-instance-process --variables "`jq '.' variables/multi-instance-process/some-in-stock.json`"```. (If jq is not installed, replace the command between " " by the content in `some-in-stock.json`).
-4. Run the predefined job-worker: Open `CartUpdate.kt` of `zeebe-job-worker` in IntelliJ and run the file. The logs should start showing.
-5. Run a job-worker in command line: `zbctl --insecure create worker initiate-payment --handler cat`.
+2. Deploy all processes and start all job workers: `cd zeebe-job-worker && gradle build && gradle bootrun`
 6. Publish a message: `zbctl --insecure publish message "payment-received" --correlationKey="2"`. (Why 2? Check `some-in-stock.json`)`.
 

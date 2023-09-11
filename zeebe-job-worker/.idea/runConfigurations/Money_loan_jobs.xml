@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Money loan jobs" type="CompoundRunConfigurationType">
-    <toRun name="SendAcceptanceLetter" type="JetRunConfigurationType" />
-    <toRun name="SendRejectionLetter" type="JetRunConfigurationType" />
-    <toRun name="TransferMoney" type="JetRunConfigurationType" />
-    <method v="2" />
-  </configuration>
-</component>
