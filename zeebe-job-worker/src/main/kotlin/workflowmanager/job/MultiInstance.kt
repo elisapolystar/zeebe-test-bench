@@ -1,4 +1,4 @@
-package processmanager
+package workflowmanager.job
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -8,27 +8,8 @@ import io.camunda.zeebe.spring.client.annotation.JobWorker
 import org.springframework.stereotype.Component
 
 @Component
-open class Jobs {
+class MultiInstance {
     private fun delay() { Thread.sleep(1000) }
-
-    @JobWorker(type = "send-acceptance-letter")
-    fun sendAcceptanceLetter(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("The loan request is accepted. Processing to transfer money.")
-        delay()
-    }
-
-    @JobWorker(type = "send-rejection-letter")
-    fun sendRejectionLetter(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("Sorry, your debt is too high to proceed. Loan request is rejected.")
-    }
-
-    @JobWorker(type = "transfer-money")
-    fun transferMoney(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("Money has been transferred successfully.")
-    }
 
     @JobWorker(type = "parse-order-items")
     fun parseOrderItems(client: JobClient, job: ActivatedJob) {
@@ -87,25 +68,5 @@ open class Jobs {
     fun shipWithoutInsurance(client: JobClient, job: ActivatedJob) {
         client.newCompleteCommand(job.key).send().join()
         println("Order shipped without insurance.")
-    }
-
-    @JobWorker(type = "collect-money")
-    fun collectMoney(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("Money collected.")
-        delay()
-    }
-
-    @JobWorker(type = "fetch-items")
-    fun fetchItems(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("Item fetched.")
-        delay()
-    }
-
-    @JobWorker(type = "ship-parcel")
-    fun shipParcel(client: JobClient, job: ActivatedJob) {
-        client.newCompleteCommand(job.key).send().join()
-        println("Parcel shipped.")
     }
 }
