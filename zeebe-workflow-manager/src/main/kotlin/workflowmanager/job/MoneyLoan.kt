@@ -1,4 +1,4 @@
-package workflowmanager.job;
+package workflowmanager.job
 
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.worker.JobClient

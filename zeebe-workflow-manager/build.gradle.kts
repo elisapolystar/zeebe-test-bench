@@ -22,6 +22,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     testImplementation(kotlin("test"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.camunda.spring:spring-boot-starter-camunda-test:8.2.4")
+    testImplementation("ch.qos.logback:logback-classic:1.4.11")
 }
 
 tasks.test {
