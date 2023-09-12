@@ -1,3 +1,3 @@
 
-rootProject.name = "zeebe-job-worker"
+rootProject.name = "zeebe-workflow-manager"
 
