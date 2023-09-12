@@ -17,7 +17,7 @@ dependencies {
     implementation("io.camunda:zeebe-client-java:8.2.11")
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
     implementation("io.camunda:spring-zeebe-starter:8.2.4")
-    implementation("org.projectlombok:lombok")
+    implementation("org.slf4j:slf4j-log4j12:2.0.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("com.google.code.gson:gson:2.10.1")
     testImplementation(kotlin("test"))
