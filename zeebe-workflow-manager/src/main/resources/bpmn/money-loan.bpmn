@@ -9,18 +9,10 @@
       <bpmn:outgoing>Flow_0kwk6ch</bpmn:outgoing>
       <bpmn:outgoing>Flow_1sw3gpt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_03ei1b4" sourceRef="StartEvent_1" targetRef="Gateway_0wveo0b" />
-    <bpmn:sequenceFlow id="Flow_0kwk6ch" sourceRef="Gateway_0wveo0b" targetRef="send-acceptance-letter" />
-    <bpmn:sequenceFlow id="Flow_1btw3rn" sourceRef="send-acceptance-letter" targetRef="transfer-money" />
     <bpmn:endEvent id="Event_19fj3y9" name="End">
       <bpmn:incoming>Flow_1e0z4vc</bpmn:incoming>
-      <bpmn:incoming>Flow_0om718m</bpmn:incoming>
+      <bpmn:incoming>Flow_02lkdv4</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1e0z4vc" sourceRef="transfer-money" targetRef="Event_19fj3y9" />
-    <bpmn:sequenceFlow id="Flow_1sw3gpt" sourceRef="Gateway_0wveo0b" targetRef="send-rejection-letter">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=debt &gt; 1000</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0om718m" sourceRef="send-rejection-letter" targetRef="Event_19fj3y9" />
     <bpmn:serviceTask id="send-acceptance-letter" name="Send acceptance letter">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-acceptance-letter" />
@@ -40,67 +32,117 @@
         <zeebe:taskDefinition type="send-rejection-letter" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1sw3gpt</bpmn:incoming>
-      <bpmn:outgoing>Flow_0om718m</bpmn:outgoing>
+      <bpmn:incoming>Flow_116u7bb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1td2sw1</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_07jlc9k" name="Customer receive letter?" default="Flow_1m61898">
+      <bpmn:incoming>Flow_1td2sw1</bpmn:incoming>
+      <bpmn:outgoing>Flow_02lkdv4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1m61898</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateCatchEvent id="Event_09vew4m" name="Wait 10 seconds">
+      <bpmn:incoming>Flow_1m61898</bpmn:incoming>
+      <bpmn:outgoing>Flow_116u7bb</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1k2y3cd">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_03ei1b4" sourceRef="StartEvent_1" targetRef="Gateway_0wveo0b" />
+    <bpmn:sequenceFlow id="Flow_0kwk6ch" sourceRef="Gateway_0wveo0b" targetRef="send-acceptance-letter" />
+    <bpmn:sequenceFlow id="Flow_1sw3gpt" sourceRef="Gateway_0wveo0b" targetRef="send-rejection-letter">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=debt &gt; 1000</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1e0z4vc" sourceRef="transfer-money" targetRef="Event_19fj3y9" />
+    <bpmn:sequenceFlow id="Flow_02lkdv4" sourceRef="Gateway_07jlc9k" targetRef="Event_19fj3y9">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=received = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1btw3rn" sourceRef="send-acceptance-letter" targetRef="transfer-money" />
+    <bpmn:sequenceFlow id="Flow_116u7bb" sourceRef="Event_09vew4m" targetRef="send-rejection-letter" />
+    <bpmn:sequenceFlow id="Flow_1m61898" sourceRef="Gateway_07jlc9k" targetRef="Event_09vew4m" />
+    <bpmn:sequenceFlow id="Flow_1td2sw1" sourceRef="send-rejection-letter" targetRef="Gateway_07jlc9k" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="money-loan">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+      <bpmndi:BPMNShape id="BPMNShape_0sklyrr" bpmnElement="StartEvent_1">
         <dc:Bounds x="172" y="182" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="153" y="225" width="75" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0wveo0b_di" bpmnElement="Gateway_0wveo0b" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="BPMNShape_02vkamx" bpmnElement="Gateway_0wveo0b" isMarkerVisible="true">
         <dc:Bounds x="295" y="175" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="355" y="193" width="62" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_19fj3y9_di" bpmnElement="Event_19fj3y9">
-        <dc:Bounds x="962" y="182" width="36" height="36" />
+      <bpmndi:BPMNShape id="BPMNShape_0ma20o0" bpmnElement="Event_19fj3y9">
+        <dc:Bounds x="892" y="182" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="970" y="225" width="20" height="14" />
+          <dc:Bounds x="862" y="193" width="20" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_10uea57_di" bpmnElement="send-acceptance-letter">
+      <bpmndi:BPMNShape id="BPMNShape_0vmgyyv" bpmnElement="send-acceptance-letter">
         <dc:Bounds x="450" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1bximgm_di" bpmnElement="transfer-money">
+      <bpmndi:BPMNShape id="BPMNShape_1aj22a7" bpmnElement="transfer-money">
         <dc:Bounds x="660" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0al3gw0_di" bpmnElement="send-rejection-letter">
-        <dc:Bounds x="580" y="260" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_10gw347" bpmnElement="send-rejection-letter">
+        <dc:Bounds x="440" y="250" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_03ei1b4_di" bpmnElement="Flow_03ei1b4">
+      <bpmndi:BPMNShape id="BPMNShape_0k1n6hf" bpmnElement="Event_09vew4m">
+        <dc:Bounds x="612" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="590" y="425" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0dsmlc1" bpmnElement="Gateway_07jlc9k" isMarkerVisible="true">
+        <dc:Bounds x="755" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="737" y="235" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_0lo3qca" bpmnElement="Flow_03ei1b4">
         <di:waypoint x="208" y="200" />
         <di:waypoint x="295" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0kwk6ch_di" bpmnElement="Flow_0kwk6ch">
+      <bpmndi:BPMNEdge id="BPMNEdge_0d0iza4" bpmnElement="Flow_0kwk6ch">
         <di:waypoint x="320" y="175" />
         <di:waypoint x="320" y="120" />
         <di:waypoint x="450" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1btw3rn_di" bpmnElement="Flow_1btw3rn">
+      <bpmndi:BPMNEdge id="BPMNEdge_1va3w08" bpmnElement="Flow_1sw3gpt">
+        <di:waypoint x="320" y="225" />
+        <di:waypoint x="320" y="290" />
+        <di:waypoint x="440" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0a2r3s9" bpmnElement="Flow_1e0z4vc">
+        <di:waypoint x="760" y="120" />
+        <di:waypoint x="910" y="120" />
+        <di:waypoint x="910" y="182" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1yow0p2" bpmnElement="Flow_02lkdv4">
+        <di:waypoint x="805" y="290" />
+        <di:waypoint x="910" y="290" />
+        <di:waypoint x="910" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1r5xu81" bpmnElement="Flow_1btw3rn">
         <di:waypoint x="550" y="120" />
         <di:waypoint x="660" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1e0z4vc_di" bpmnElement="Flow_1e0z4vc">
-        <di:waypoint x="760" y="120" />
-        <di:waypoint x="910" y="120" />
-        <di:waypoint x="910" y="200" />
-        <di:waypoint x="962" y="200" />
+      <bpmndi:BPMNEdge id="BPMNEdge_0hs6nhy" bpmnElement="Flow_116u7bb">
+        <di:waypoint x="612" y="400" />
+        <di:waypoint x="490" y="400" />
+        <di:waypoint x="490" y="330" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1sw3gpt_di" bpmnElement="Flow_1sw3gpt">
-        <di:waypoint x="320" y="225" />
-        <di:waypoint x="320" y="300" />
-        <di:waypoint x="580" y="300" />
+      <bpmndi:BPMNEdge id="BPMNEdge_161bgjd" bpmnElement="Flow_1m61898">
+        <di:waypoint x="780" y="315" />
+        <di:waypoint x="780" y="400" />
+        <di:waypoint x="648" y="400" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0om718m_di" bpmnElement="Flow_0om718m">
-        <di:waypoint x="680" y="300" />
-        <di:waypoint x="910" y="300" />
-        <di:waypoint x="910" y="200" />
-        <di:waypoint x="962" y="200" />
+      <bpmndi:BPMNEdge id="Flow_1td2sw1_di" bpmnElement="Flow_1td2sw1">
+        <di:waypoint x="540" y="290" />
+        <di:waypoint x="755" y="290" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

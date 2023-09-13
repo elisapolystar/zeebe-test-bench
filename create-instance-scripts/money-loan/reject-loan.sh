@@ -1,1 +1,1 @@
-zbctl --insecure create instance money-loan --variables "{\"debt\": 10000}"
+zbctl --insecure create instance money-loan --variables "{\"debt\": 10000, \"received\": false}"
