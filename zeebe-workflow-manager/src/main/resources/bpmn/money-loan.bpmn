@@ -40,11 +40,11 @@
       <bpmn:outgoing>Flow_02lkdv4</bpmn:outgoing>
       <bpmn:outgoing>Flow_1m61898</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:intermediateCatchEvent id="Event_09vew4m" name="Wait 10 seconds">
+    <bpmn:intermediateCatchEvent id="Event_09vew4m" name="Wait 30 seconds">
       <bpmn:incoming>Flow_1m61898</bpmn:incoming>
       <bpmn:outgoing>Flow_116u7bb</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1k2y3cd">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_03ei1b4" sourceRef="StartEvent_1" targetRef="Gateway_0wveo0b" />
