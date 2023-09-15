@@ -15,3 +15,7 @@ zbctl --insecure create instance multi-instance-process --variables "{
     ],
     \"orderId\": \"2\"
 }"
+
+sleep 60
+
+zbctl --insecure publish message "payment-received" --correlationKey "2"
