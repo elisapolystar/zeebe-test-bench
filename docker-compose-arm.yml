@@ -96,7 +96,7 @@ services:
       - devenv
   
   postgres:
-    image: ghcr.io/cloudnative-pg/postgis:14-3.3
+    image: arm64v8/postgres:11-bullseye
     restart: always
     environment:
       - POSTGRES_DB=postgres
@@ -115,6 +115,8 @@ services:
       - devenv
 
 volumes:
+  topics:
+  create-topics.sh:
   exporters:
   postgres:
 

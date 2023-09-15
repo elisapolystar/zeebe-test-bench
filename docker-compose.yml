@@ -94,7 +94,7 @@ services:
       - devenv
   
   postgres:
-    image: ghcr.io/cloudnative-pg/postgis:14-3.3
+    image: bitnami/postgresql:11.21.0
     restart: always
     environment:
       - POSTGRES_DB=postgres
