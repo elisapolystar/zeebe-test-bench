@@ -4,9 +4,8 @@
 This repository provides a test bench for building a monitoring workflow application. It includes:
 - A development environment deployed to Docker with different services (Zeebe, Kafka, Postgres...)
 - Process files (in `.bpmn` format, located under `./zeebe-workflow-manager/src/main/resources/bpmn`) to be deployed to Zeebe.
-- Scripts to deploy these processes to Zeebe using `zbctl`.
-- Job workers that can be called from the BPMN files.
-- Predefined instances to be created.
+- Deploying processes and running job workers within a single command.
+- Predefined instances to be created using `zbctl`.
 
 ## Installation
 The following application should be installed: 
@@ -20,9 +19,9 @@ The following application should be installed:
 - Gradle v8.1.1: `sdk install gradle 8.1.1`
 - Kotlin: `sdk install kotlin`
 - [Camunda Modeler](https://camunda.com/download/modeler/)
+- `zbctl`
 
 #### Recommended
-- `zbctl`
 - `jq`: `sudo apt-get install jq`
 - [IntelliJ IDEA Community Edition](https://www.jetbrains.com/help/idea/installation-guide.html)
 
@@ -50,5 +49,6 @@ The following application should be installed:
 - Deploy all processes, start all job workers: `gradle bootrun`.
 - Create instances using ready-made script (run at `zeebe-test-bench` directory): `./create-instance-scripts/<path-to-.sh-file>`
     - If the terminal says "Permission denied...", you need to give executing permission to all scripts files: `chmod +x ./create-instance-scripts/*/*.sh`
+    - Note that `zbctl` has to be installed
 
 Each job worker used and process instance created can print one or more output lines to the command line.
