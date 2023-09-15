@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class MultiInstance {
-    private fun delay() { Thread.sleep(2000) }
+    private fun delay() { Thread.sleep(10000) }
 
     @JobWorker(type = "parse-order-items")
     fun parseOrderItems(client: JobClient, job: ActivatedJob) {

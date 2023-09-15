@@ -16,19 +16,19 @@ public class MoneyLoan {
     fun sendAcceptanceLetter(client: JobClient, job: ActivatedJob) {
         client.newCompleteCommand(job.key).send().join()
         println("The loan request is accepted. Processing to transfer money.")
-        Thread.sleep(1000)
+        Thread.sleep(10000)
     }
 
-    private var iteration = 0
+    private var iteration = 1
     @JobWorker(type = "send-rejection-letter")
     fun sendRejectionLetter(client: JobClient, job: ActivatedJob) {
         client.newCompleteCommand(job.key).send()
-        if (iteration < 5) println("Sorry, your debt is too high to proceed. The rejection letter is sent. Waiting until the letter is received.")
-        iteration += 1
-        if (iteration == 5) {
+        if (iteration % 5 != 0) println("Sorry, your debt is too high to proceed. The rejection letter is sent. Waiting until the letter is received.")
+        if (iteration % 5 == 0) {
             zeebeClient.newSetVariablesCommand(job.processInstanceKey).variables("{\"received\":true}").send().join()
             println("Letter has been received.")
         }
+        iteration += 1
     }
 
     @JobWorker(type = "transfer-money")

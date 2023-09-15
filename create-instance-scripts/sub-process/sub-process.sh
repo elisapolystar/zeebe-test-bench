@@ -1,1 +1,1 @@
-zbctl --insecure create instance order-subprocess
+zbctl --insecure create instance order-main

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class SubProcess {
-    private fun delay() { Thread.sleep(1000) }
+    private fun delay() { Thread.sleep(10000) }
 
     @JobWorker(type = "collect-money")
     fun collectMoney(client: JobClient, job: ActivatedJob) {

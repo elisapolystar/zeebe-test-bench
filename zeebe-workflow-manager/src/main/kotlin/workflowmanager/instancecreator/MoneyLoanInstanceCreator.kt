@@ -20,7 +20,7 @@ class MoneyLoanInstanceCreator {
         println()
     }
 
-    fun createInstance(filename: String): ProcessInstanceEvent? {
+    private fun createInstance(filename: String): ProcessInstanceEvent? {
         return client
             .newCreateInstanceCommand()
             .bpmnProcessId("money-loan")
