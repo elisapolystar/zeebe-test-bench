@@ -1,0 +1,3 @@
+CREATE USER test PASSWORD 'password';
+CREATE DATABASE test OWNER test;
+GRANT CONNECT ON DATABASE test TO test;
