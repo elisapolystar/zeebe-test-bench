@@ -40,11 +40,11 @@
       <bpmn:outgoing>Flow_02lkdv4</bpmn:outgoing>
       <bpmn:outgoing>Flow_1m61898</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:intermediateCatchEvent id="Event_09vew4m" name="Wait 30 seconds">
+    <bpmn:intermediateCatchEvent id="Event_09vew4m" name="Wait 2 minutes">
       <bpmn:incoming>Flow_1m61898</bpmn:incoming>
       <bpmn:outgoing>Flow_116u7bb</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1k2y3cd">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT120S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_03ei1b4" sourceRef="StartEvent_1" targetRef="Gateway_0wveo0b" />
@@ -93,7 +93,7 @@
       <bpmndi:BPMNShape id="BPMNShape_0k1n6hf" bpmnElement="Event_09vew4m">
         <dc:Bounds x="612" y="382" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="590" y="425" width="81" height="14" />
+          <dc:Bounds x="594" y="425" width="73" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0dsmlc1" bpmnElement="Gateway_07jlc9k" isMarkerVisible="true">

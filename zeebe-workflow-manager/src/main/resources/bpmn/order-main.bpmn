@@ -25,7 +25,7 @@
     <bpmn:sequenceFlow id="Flow_0ph4kkj" sourceRef="ship-parcel" targetRef="Event_06awsrd" />
     <bpmn:callActivity id="Activity_0w6u2p9" name="Processing order">
       <bpmn:extensionElements>
-        <zeebe:calledElement processId="process-order" propagateAllChildVariables="false" />
+        <zeebe:calledElement processId="order-subprocess" propagateAllChildVariables="false" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_17bi60q</bpmn:incoming>
       <bpmn:outgoing>Flow_1awp1nb</bpmn:outgoing>
