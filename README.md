@@ -49,6 +49,6 @@ The following application should be installed:
 - Build the project: `gradle build`.
 - Deploy all processes, start all job workers: `gradle bootrun`.
 - Create instances using ready-made script (run at `zeebe-test-bench` directory): `./create-instance-scripts/<path-to-.sh-file>`
-    - If the terminal says "Permisison denied...", you need to give executing permission to all scripts files: `chmod +x ./create-instance-scripts/*/*.sh`
+    - If the terminal says "Permission denied...", you need to give executing permission to all scripts files: `chmod +x ./create-instance-scripts/*/*.sh`
 
 Each job worker used and process instance created can print one or more output lines to the command line.
