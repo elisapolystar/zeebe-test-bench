@@ -42,7 +42,7 @@ The following application should be installed:
 - Deploy a process: `zbctl --insecure deploy /path/to/bpmn/<process-name.bpmn>`
 - Create an instance for a process: `zbctl --insecure create instance <process-id> --variables <necessary variables>`. The process ID can be checked by either on the command line after deploying the process, or when opening the process' file in Camunda Modeler. Some variables are pre-defined under `./variables`.
 - Create a job worker: `zbctl --insecure create worker <task-definition-type> --handler <command>`. Task definition's type is set in Modeler.
-- Publish a message: `zbctl --insecure publish message <task-definition-type> --correlationKey=<key>`. The correlation key is set in Modeler as a variable (e.g., "orderId"), and "orderId" must be included when creating the process instance.
+- Publish a message: `zbctl --insecure publish message <message-name> --correlationKey=<key>`. The correlation key is set in Modeler as a variable (e.g., "orderId"), and "orderId" must be included when creating the process instance.
 
 ## Deploy workflows, start job workers, create instances without zbctl
 `zeebe-workflow-manager` is a Gradle project which includes pre-defined job workers and process definitions. To start:
