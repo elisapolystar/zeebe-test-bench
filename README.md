@@ -36,13 +36,6 @@ The following application should be installed:
 - Open Zeebe Simple Monitor at `localhost:8083`. No process should be visible yet, but the UI should be.
     - If not, restart `zeebe-simple-monitor` container in Docker Desktop until its log displays something like "Started ZeebeSimpleMonitorApp in x seconds".
 
-## Interaction with Zeebe broker using zbctl
-`zbctl` is a command-line tool to interact with Zeebe. The following examples illustrate how to use it.
-- Deploy a process: `zbctl --insecure deploy /path/to/bpmn/<process-name.bpmn>`
-- Create an instance for a process: `zbctl --insecure create instance <process-id> --variables <necessary variables>`. The process ID can be checked by either on the command line after deploying the process, or when opening the process' file in Camunda Modeler. Some variables are pre-defined under `./variables`.
-- Create a job worker: `zbctl --insecure create worker <task-definition-type> --handler <command>`. Task definition's type is set in Modeler.
-- Publish a message: `zbctl --insecure publish message <message-name> --correlationKey=<key>`. The correlation key is set in Modeler as a variable (e.g., "orderId"), and "orderId" must be included when creating the process instance.
-
 ## Deploy workflows, start job workers, create instances without zbctl
 `zeebe-workflow-manager` is a Gradle project which includes pre-defined job workers and process definitions. To start:
 - Build the project: `gradle build`.
@@ -50,5 +43,12 @@ The following application should be installed:
 - Create instances using ready-made script (run at `zeebe-test-bench` directory): `./create-instance-scripts/<path-to-.sh-file>`
     - If the terminal says "Permission denied...", you need to give executing permission to all scripts files: `chmod +x ./create-instance-scripts/*/*.sh`
     - Note that `zbctl` has to be installed
+
+## Interaction with Zeebe broker using zbctl
+`zbctl` is a command-line tool to interact with Zeebe. The following examples illustrate how to use it.
+- Deploy a process: `zbctl --insecure deploy /path/to/bpmn/<process-name.bpmn>`
+- Create an instance for a process: `zbctl --insecure create instance <process-id> --variables <necessary variables>`. The process ID can be checked by either on the command line after deploying the process, or when opening the process' file in Camunda Modeler. Some variables are pre-defined under `./variables`.
+- Create a job worker: `zbctl --insecure create worker <task-definition-type> --handler <command>`. Task definition's type is set in Modeler.
+- Publish a message: `zbctl --insecure publish message <message-name> --correlationKey=<key>`. The correlation key is set in Modeler as a variable (e.g., "orderId"), and "orderId" must be included when creating the process instance.
 
 Each job worker used and process instance created can print one or more output lines to the command line.
