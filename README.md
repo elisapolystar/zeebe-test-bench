@@ -7,7 +7,7 @@ This repository provides a test bench for building a monitoring workflow applica
 - Deploying processes and running job workers within a single command.
 - Predefined instances to be created using `zbctl`.
 
-## Installation
+## Installation 
 The following application should be installed: 
 #### Required
 - [WSL2 (for Windows)](https://learn.microsoft.com/en-us/windows/wsl/install). Use WSL instead of Command Prompt / PowerShell from now on.
